@@ -1,3 +1,4 @@
+import os
 
 from loguru import logger
 from peewee import IntegrityError
@@ -14,6 +15,9 @@ def add_image(user_id, tags):
     image_id = find_next_image_id()
     output_dir = convert_tags_to_dir(tags, user_id)
     image_data = {'picture_id':f"{image_id}", 'user_id': user_id, 'tags': tags}
+    filepath = os.path.join(output_dir, f"{image_id}.png")
+    with open(filepath, 'w') as new_image:
+        new_image.write(image_data)
     if image_insert(**image_data) is True:
         logger.info(f'Added {image_id} image to database')
         return True
@@ -36,7 +40,7 @@ def convert_tags_to_dir(tags, user_id):
     tags = tags.replace('#', '').split()
     logger.debug(tags)
     tags.sort()
-    output_dir = PICTURE_DIR+f"user_id/"+"/".join(tags)
+    output_dir = PICTURE_DIR+f"{user_id}/"+"/".join(tags)
     logger.debug(output_dir)
     return output_dir
 
@@ -45,7 +49,7 @@ def search_image():
     '''Curries the search function to the Pictures table, then searches for picture_id in that table'''
     _image_search = search_table(Pictures)
 
-    # All we want for this inner function is user_id and we can now search for it
+    # All we want for this inner function is picture_id and we can now search for it
     def search(picture_id):
         nonlocal _image_search
         return _image_search(picture_id=picture_id)
