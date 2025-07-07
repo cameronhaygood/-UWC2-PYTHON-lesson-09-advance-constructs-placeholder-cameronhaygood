@@ -51,7 +51,8 @@ def list_user_images(_path, user_data):
     if _path.is_file():
         # Stop only at .png files
         if _path.suffix == '.png':
-            final_path_data = _path.split('//')
+            logger.debug(f'Found file at {_path}')
+            final_path_data = str(_path).split('\\')
             # path follows the format 'pictures/user_id/tags/file'
             # Second value is user_id, third-second to last is tags, last is image
             file_data = (final_path_data[1], final_path_data[2:-1], final_path_data[-1])
@@ -63,7 +64,7 @@ def list_user_images(_path, user_data):
     else:
         # Since it's a directory, let's recurse into them
         for i in _path.iterdir():
-            list_user_images(i)
+            list_user_images(i, user_data)
 
 # Search Images
 def search_image():
