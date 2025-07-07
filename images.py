@@ -29,6 +29,14 @@ def find_next_image_id():
             return next_unique_id
         counter += 1
 
+def convert_tags(tags):
+    tags = tags.replace('#', '').split()
+    logger.debug(tags)
+    tags = tags.sort()
+    output_dir = "/".join(tags)
+    logger.debug(output_dir)
+    return output_dir
+
 # Search Images
 def search_image():
     '''Curries the search function to the Pictures table, then searches for picture_id in that table'''
