@@ -15,9 +15,10 @@ def add_image(user_id, tags):
     image_id = find_next_image_id()
     output_dir = convert_tags_to_dir(tags, user_id)
     image_data = {'picture_id':f"{image_id}", 'user_id': user_id, 'tags': tags}
+    os.makedirs(output_dir, exist_ok=True)
     filepath = os.path.join(output_dir, f"{image_id}.png")
     with open(filepath, 'w') as new_image:
-        new_image.write(image_data)
+        new_image.write(str(image_data))
     if image_insert(**image_data) is True:
         logger.info(f'Added {image_id} image to database')
         return True

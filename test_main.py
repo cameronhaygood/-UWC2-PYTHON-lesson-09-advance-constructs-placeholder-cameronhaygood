@@ -4,10 +4,12 @@ This module tests the main.py, users.py, and user_status.py code
 # pylint: disable=R0904
 import os
 import unittest
+import shutil
 from unittest.mock import MagicMock
 
 import main
 from socialnetwork_model import ds, Users, Statuses, Pictures
+from images import PICTURE_DIR
 
 
 class TestMain(unittest.TestCase):
@@ -63,11 +65,23 @@ class TestMain(unittest.TestCase):
             tags=self.known_user.known_tags
         )
 
+        try:
+            shutil.rmtree(PICTURE_DIR)
+            print(f"Directory '{PICTURE_DIR}' and its contents deleted successfully.")
+        except OSError as e:
+            print(f"Error: {PICTURE_DIR} : {e.strerror}")
+
     def tearDown(self):
         '''Tear down the database initialized to allow testing when complete'''
         self.users.delete()
         self.statuses.delete()
         self.pictures.delete()
+
+        try:
+            shutil.rmtree(PICTURE_DIR)
+            print(f"Directory '{PICTURE_DIR}' and its contents deleted successfully.")
+        except OSError as e:
+            print(f"Error: {PICTURE_DIR} : {e.strerror}")
 
         # Defining current directory path to find .csv files
 
