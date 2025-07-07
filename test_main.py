@@ -306,13 +306,11 @@ class TestMain(unittest.TestCase):
 
 
     def test_add_image(self):
-        self.assertTrue(main.add_image(self.known_user.new_picture_id,
-                                       self.known_user.user_id,
+        self.assertTrue(main.add_image(self.known_user.user_id,
                                        self.known_user.new_tags))
 
     def test_add_image_conflict(self):
         print('breakpoint 1')
-        self.assertFalse(main.add_image(self.known_user.known_picture_id,
-                                        self.known_user.user_id,
+        self.assertFalse(main.add_image(self.known_user.user_id,
                                         self.known_user.new_tags))
         print('breakpoint')

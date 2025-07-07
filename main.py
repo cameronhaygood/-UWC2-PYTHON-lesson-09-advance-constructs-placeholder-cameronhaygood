@@ -156,9 +156,8 @@ def search_status(status_id):
     logger.error(f"main.search_status is returning None for {status_id})")
     return None
 
-def add_image(picture_id, user_id, tags):
+def add_image(user_id, tags):
     '''Adds image to Pictures table using supplied information'''
-    picture_data = {'picture_id': picture_id,
-                    'user_id': user_id,
+    picture_data = {'user_id': user_id,
                     'tags': tags}
-    return images.image_insert(**picture_data)
+    return images.add_image(**picture_data)
