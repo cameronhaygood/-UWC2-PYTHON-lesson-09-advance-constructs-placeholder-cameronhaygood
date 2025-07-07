@@ -1,6 +1,8 @@
 '''
 main driver for a simple social network project
 '''
+from pathlib import Path
+
 from loguru import logger
 
 import users
@@ -161,3 +163,10 @@ def add_image(user_id, tags):
     picture_data = {'user_id': user_id,
                     'tags': tags}
     return images.add_image(**picture_data)
+
+def list_user_images(user_id):
+    '''Generates list of tuples with image data by user_id'''
+
+    start_path = Path(images.PICTURE_DIR) / user_id
+    user_data = images.list_user_images(start_path)
+    return user_data
