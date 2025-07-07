@@ -2,37 +2,37 @@ from peewee import SqliteDatabase, Model, CharField, ForeignKeyField, IntegrityE
 from playhouse.dataset import DataSet
 from loguru import logger
 
-# db = SqliteDatabase('social_network.db', pragmas={'foreign_keys': 1})
+db = SqliteDatabase('social_network.db', pragmas={'foreign_keys': 1})
 
 
-# class BaseModel(Model):
-#     class Meta:
-#         database = db
-#
-# class UserTable(BaseModel):
-#     user_id = CharField(primary_key=True, max_length=30)
-#     first_name = CharField(max_length=30)
-#     last_name = CharField(max_length=100)
-#     email = CharField()
-#
-# class StatusTable(BaseModel):
-#     status_id = CharField(primary_key=True)
-#     user_id = ForeignKeyField(UserTable, on_delete='CASCADE')
-#     status_text = CharField()
-#
-# db.connect()
-# db.create_tables([UserTable, StatusTable])
-# db.close()
+class BaseModel(Model):
+    class Meta:
+        database = db
 
-ds = DataSet("sqlite:///social_network.db")
+class UserTable(BaseModel):
+    user_id = CharField(primary_key=True, max_length=30)
+    first_name = CharField(max_length=30)
+    last_name = CharField(max_length=100)
+    email = CharField()
+
+class StatusTable(BaseModel):
+    status_id = CharField(primary_key=True)
+    user_id = ForeignKeyField(UserTable, on_delete='CASCADE')
+    status_text = CharField()
+
+db.connect()
+db.create_tables([UserTable, StatusTable])
+db.close()
+
+ds = DataSet(db)
 Users = ds["usertable"]
 Statuses = ds["statustable"]
-Users.insert(user_id='index_creation')
-Statuses.insert(status_id='index_creation')
-Users.create_index(["user_id"], unique=True)
-Statuses.create_index(["status_id"], unique=True)
-Users.delete(user_id='index_creation')
-Statuses.delete(status_id='index_creation')
+# Users.insert(user_id='index_creation')
+# Statuses.insert(status_id='index_creation')
+# Users.create_index(["user_id"], unique=True)
+# Statuses.create_index(["status_id"], unique=True)
+# Users.delete(user_id='index_creation')
+# Statuses.delete(status_id='index_creation')
 
 
 def insert_table(database):
