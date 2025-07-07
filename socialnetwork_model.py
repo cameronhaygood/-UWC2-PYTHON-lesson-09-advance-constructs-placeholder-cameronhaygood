@@ -20,13 +20,20 @@ class StatusTable(BaseModel):
     user_id = ForeignKeyField(UserTable, on_delete='CASCADE')
     status_text = CharField()
 
+class PictureTable(BaseModel):
+    picture_id = CharField(primary_key=True)
+    user_id = ForeignKeyField(UserTable, on_delete='CASCADE')
+    tags = CharField(max_length=100)
+
+
 db.connect()
-db.create_tables([UserTable, StatusTable])
+db.create_tables([UserTable, StatusTable, PictureTable])
 db.close()
 
 ds = DataSet(db)
 Users = ds["usertable"]
 Statuses = ds["statustable"]
+Pictures = ds["picturetable"]
 # Users.insert(user_id='index_creation')
 # Statuses.insert(status_id='index_creation')
 # Users.create_index(["user_id"], unique=True)

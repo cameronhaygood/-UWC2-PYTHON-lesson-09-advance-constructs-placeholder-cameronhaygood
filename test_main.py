@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import MagicMock
 
 import main
-from socialnetwork_model import ds, Users, Statuses
+from socialnetwork_model import ds, Users, Statuses, Pictures
 
 
 class TestMain(unittest.TestCase):
@@ -20,6 +20,7 @@ class TestMain(unittest.TestCase):
         self.dataset = ds
         self.users = Users
         self.statuses = Statuses
+        self.pictures = Pictures
 
         self.known_user = MagicMock()
         self.known_user.user_id = 'chaygood'
@@ -30,6 +31,10 @@ class TestMain(unittest.TestCase):
         self.known_user.known_status_text = 'This is my default test status!'
         self.known_user.new_status_id = 'chaygood0002'
         self.known_user.new_text = 'And this is some new text!'
+        self.known_user.known_picture_id = '0000000001'
+        self.known_user.known_tags = "#F1 #golf"
+        self.known_user.new_picture_id = '0000000002'
+        self.known_user.new_tags = "#skiing #snowboarding #golf"
 
         self.new_user = MagicMock()
         self.new_user.user_id = 'test01'
@@ -52,10 +57,17 @@ class TestMain(unittest.TestCase):
             status_text=self.known_user.known_status_text)
         self.statuses.create_index(["status_id"], unique=True)
 
+        self.pictures.insert(
+            picture_id=self.known_user.known_picture_id,
+            user_id=self.known_user.user_id,
+            tags=self.known_user.known_tags
+        )
+
     def tearDown(self):
         '''Tear down the database initialized to allow testing when complete'''
         self.users.delete()
         self.statuses.delete()
+        self.pictures.delete()
 
         # Defining current directory path to find .csv files
 
@@ -291,3 +303,16 @@ class TestMain(unittest.TestCase):
         '''Tests that searching for a status that does not exist in the database returns False'''
 
         self.assertIsNone(main.search_status(self.known_user.new_status_id))
+
+
+    def test_add_image(self):
+        self.assertTrue(main.add_image(self.known_user.new_picture_id,
+                                       self.known_user.user_id,
+                                       self.known_user.new_tags))
+
+    def test_add_image_conflict(self):
+        print('breakpoint 1')
+        self.assertFalse(main.add_image(self.known_user.known_picture_id,
+                                        self.known_user.user_id,
+                                        self.known_user.new_tags))
+        print('breakpoint')
