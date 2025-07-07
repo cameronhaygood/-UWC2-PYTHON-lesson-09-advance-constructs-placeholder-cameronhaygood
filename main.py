@@ -166,7 +166,7 @@ def add_image(user_id, tags):
 
 def list_user_images(user_id):
     '''Generates list of tuples with image data by user_id'''
-
+    user_data = []
     start_path = Path(images.PICTURE_DIR) / user_id
-    user_data = images.list_user_images(start_path)
+    user_data = images.list_user_images(start_path, user_data)
     return user_data

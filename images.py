@@ -47,7 +47,7 @@ def convert_tags_to_dir(tags, user_id):
     logger.debug(output_dir)
     return output_dir
 
-def list_user_images(_path):
+def list_user_images(_path, user_data):
     if _path.is_file():
         # Stop only at .png files
         if _path.suffix == '.png':
@@ -56,6 +56,7 @@ def list_user_images(_path):
             # Second value is user_id, third-second to last is tags, last is image
             file_data = (final_path_data[1], final_path_data[2:-1], final_path_data[-1])
             logger.debug (f"Tuple generated for {final_path_data[1]}: {file_data}")
+            user_data.append(file_data)
     elif 'venv' in str(_path.absolute()):
         # Skip the venv folders
         pass
