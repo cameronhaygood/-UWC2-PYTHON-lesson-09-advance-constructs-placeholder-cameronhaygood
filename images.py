@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from loguru import logger
 from peewee import IntegrityError
@@ -6,6 +7,7 @@ from peewee import IntegrityError
 from socialnetwork_model import insert_table, search_table, update_table, delete_table, Pictures
 
 PICTURE_DIR = "pictures/"
+path = Path.cwd() / PICTURE_DIR
 
 # Add Image to Pictures Table
 image_insert = insert_table(Pictures)
@@ -44,6 +46,19 @@ def convert_tags_to_dir(tags, user_id):
     output_dir = PICTURE_DIR+f"{user_id}/"+"/".join(tags)
     logger.debug(output_dir)
     return output_dir
+
+def list_user_images(_path):
+    if _path.is_file():
+        # Stop only at .png files
+        if _path.suffix == '.png':
+            print(_path.absolute())
+    elif 'venv' in str(_path.absolute()):
+        # Skip the venv folders
+        pass
+    else:
+        # Since it's a directory, let's recurse into them
+        for i in _path.iterdir():
+            list_user_images(i)
 
 # Search Images
 def search_image():
