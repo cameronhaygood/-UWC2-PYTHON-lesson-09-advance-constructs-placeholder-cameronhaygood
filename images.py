@@ -20,7 +20,13 @@ def add_image(user_id, tags):
         return False
 
 def find_next_image_id():
-    pass
+    '''Cycles through Picture IDs to find next unique ID'''
+    counter = 1
+    next_unique_id = str(counter).zfill(10)
+    while True:
+        if image_search(picture_id=next_unique_id) is not None:
+            return next_unique_id
+        counter += 1
 
 # Search Images
 def search_image():
@@ -30,7 +36,7 @@ def search_image():
     # All we want for this inner function is user_id and we can now search for it
     def search(picture_id):
         nonlocal _image_search
-        return _image_search(picture_id=picture_id_id)
+        return _image_search(picture_id=picture_id)
 
     return search
 image_search = search_image()
