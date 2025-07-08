@@ -170,3 +170,7 @@ def list_user_images(user_id):
     start_path = Path(images.PICTURE_DIR) / user_id
     user_data = images.list_user_images(start_path, user_data)
     return user_data
+
+def list_db_images_by_user(user_id):
+    '''Generates list of Pictures entries by User ID'''
+

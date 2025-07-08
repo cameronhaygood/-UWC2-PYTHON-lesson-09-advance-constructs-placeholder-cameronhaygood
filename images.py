@@ -4,7 +4,7 @@ from pathlib import Path
 from loguru import logger
 from peewee import IntegrityError
 
-from socialnetwork_model import insert_table, search_table, update_table, delete_table, Pictures
+from socialnetwork_model import insert_table, search_table, update_table, delete_table, Pictures, search_table_for_many
 
 PICTURE_DIR = "pictures/"
 path = Path.cwd() / PICTURE_DIR
@@ -66,6 +66,31 @@ def list_user_images(_path, user_data):
         for i in _path.iterdir():
             list_user_images(i, user_data)
 
+def list_db_images_by_user(user_id):
+    '''Generates list of Pictures entries by User ID'''
+
+    image_ids = ()
+    user_images = search_images_by_user(user_id)
+    for image in user_images:
+        image_ids.add(image['picture_id'])
+    return image_ids
+
+def reconcile_images(user_id):
+    '''Reconciles Pictures entries by User ID'''
+    db_images = list_db_images_by_user(user_id)
+    server_images = list_user_images(path, user_id)
+    server_image_ids = ()
+    for image in server_images:
+        for data in image:
+            if '.png' in data:
+                server_image_ids.add(data.strip('.png'))
+    if db_images == server_image_ids:
+        logger.info(f'Server and Database contain the same images: {db_images}')
+    else:
+        logger.info(f'Server and Database diverge:\n Server Images: {server_images}\nDatabase Images: {db_images}')
+
+
+
 # Search Images
 def search_image():
     '''Curries the search function to the Pictures table, then searches for picture_id in that table'''
@@ -78,6 +103,15 @@ def search_image():
 
     return search
 image_search = search_image()
+
+def search_images_by_user():
+    _image_search = search_table_for_many(Pictures)
+
+    def search(user_id):
+        nonlocal _image_search
+        return _image_search(user_id=user_id)
+
+    return search
 
 
 

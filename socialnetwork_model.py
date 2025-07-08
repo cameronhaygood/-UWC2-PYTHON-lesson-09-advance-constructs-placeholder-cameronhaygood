@@ -77,3 +77,10 @@ def delete_table(database):
         return database.delete(**kwargs)
 
     return delete
+
+def search_table_for_many(database):
+
+    def search_many(**kwargs):
+        return database.find(**kwargs)
+
+    return search_many
