@@ -127,12 +127,12 @@ class TestMain(unittest.TestCase):
           source CSV file)
         - Otherwise, it returns True.
         '''
-
+        main.load_users(self.accounts_csv_filename)
         # Loading from the truncated accounts.csv file
         self.assertTrue(main.load_statuses(self.status_updates_csv_filename))
         # Testing that several of the users from the csv file can be found in the User Table
-        self.assertTrue(Statuses.find_one(status_id='Isabel.Avivah34_27')['status_id'] == 'Isabel.Avivah34_27')
-        self.assertTrue(Statuses.find_one(status_id='Gwendolyn.Mallis13_114')['status_id'] == 'Gwendolyn.Mallis13_114')
+        self.assertTrue(Statuses.find_one(status_id='Blondie.Burroughs42_903')['status_id'] == 'Blondie.Burroughs42_903')
+        self.assertTrue(Statuses.find_one(status_id='Brittaney.Gentry86_736')['status_id'] == 'Brittaney.Gentry86_736')
         # Testing that a user I know does not exist in the table is not found
         self.assertFalse(Statuses.find_one(status_id=self.known_user.new_status_id))
 
