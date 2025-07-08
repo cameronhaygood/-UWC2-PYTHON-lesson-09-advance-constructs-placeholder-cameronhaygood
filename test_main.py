@@ -321,6 +321,7 @@ class TestMain(unittest.TestCase):
 
 
     def test_add_image(self):
+        '''Tests adding image to database and listing the addition'''
         self.assertTrue(main.add_image(self.known_user.user_id,
                                        self.known_user.new_tags))
 
@@ -339,4 +340,5 @@ class TestMain(unittest.TestCase):
     #     main.reconcile_images(self.known_user.user_id)
 
     def test_load_images(self):
+        '''Tests loading images from csv'''
         self.assertTrue(main.load_images(self.images_csv_filename))

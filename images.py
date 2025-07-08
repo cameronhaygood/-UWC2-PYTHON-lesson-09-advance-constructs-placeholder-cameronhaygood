@@ -1,11 +1,13 @@
+'''Defines functions related to user images'''
+
 import os
 import csv
 from pathlib import Path
 
 from loguru import logger
-from peewee import IntegrityError
+# from peewee import IntegrityError
 
-from socialnetwork_model import insert_table, search_table, update_table, delete_table, Pictures, search_table_for_many
+from socialnetwork_model import insert_table, search_table, Pictures, search_table_for_many
 
 PICTURE_DIR = "pictures/"
 path = Path.cwd() / PICTURE_DIR
@@ -25,9 +27,8 @@ def add_image(user_id, tags):
     if image_insert(**image_data) is True:
         logger.info(f'Added {image_id} image to database')
         return True
-    else:
-        logger.error(f'Integrity Error adding image: {image_id}, {user_id}, {tags}')
-        return False
+    logger.error(f'Integrity Error adding image: {image_id}, {user_id}, {tags}')
+    return False
 
 def load_images(filename):
     '''Reads in csv, renames headers to match database structure, then adds each image to table'''
@@ -57,6 +58,7 @@ def find_next_image_id():
         counter += 1
 
 def convert_tags_to_dir(tags, user_id):
+    '''Converts tags into directory path'''
     tags = tags.replace('#', '').split()
     logger.debug(tags)
     tags.sort()
@@ -65,6 +67,7 @@ def convert_tags_to_dir(tags, user_id):
     return output_dir
 
 def list_user_images(_path, user_data):
+    '''Creates list of all images on server based on user_id'''
     if _path.is_file():
         # Stop only at .png files
         if _path.suffix == '.png':
@@ -104,6 +107,7 @@ def reconcile_images(user_id):
         logger.info(f'Server and Database diverge:\n Server Images: {server_images}\nDatabase Images: {db_images}')
     image_diff = {'missing_from_db': server_images.difference(db_images),
                   'missing_from_server': db_images.difference(server_images)}
+    return image_diff
 
 
 # Search Images
@@ -120,6 +124,7 @@ def search_image():
 image_search = search_image()
 
 def search_images_by_user():
+    '''Returns list of Pictures entries by User ID'''
     _image_search = search_table_for_many(Pictures)
 
     def search(user_id):
@@ -128,6 +133,3 @@ def search_images_by_user():
 
     return search
 image_search_by_user = search_images_by_user()
-
-
-

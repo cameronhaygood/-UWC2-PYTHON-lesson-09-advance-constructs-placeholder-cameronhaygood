@@ -181,4 +181,3 @@ def list_user_images(user_id):
 def reconcile_images(user_id):
     '''Generates list of Pictures entries by User ID'''
     images.reconcile_images(user_id)
-
