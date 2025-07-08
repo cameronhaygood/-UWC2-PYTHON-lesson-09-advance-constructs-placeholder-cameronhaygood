@@ -261,7 +261,7 @@ class TestMain(unittest.TestCase):
 
         self.assertTrue(main.update_status(
             self.known_user.known_status_id,
-            self.new_user.user_id,
+            self.known_user.user_id,
             self.known_user.new_status_text))
 
     def test_update_status_conflict(self):
@@ -330,3 +330,5 @@ class TestMain(unittest.TestCase):
     #     self.assertFalse(main.add_image(self.known_user.user_id,
     #                                     self.known_user.new_tags))
     #     print('breakpoint')
+
+
