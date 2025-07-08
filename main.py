@@ -169,6 +169,7 @@ def list_user_images(user_id):
     user_data = []
     start_path = Path(images.PICTURE_DIR) / user_id
     images.list_user_images(start_path, user_data)
+    logger.info(f"List of tuples generated: {user_data}")
     return user_data
 
 def reconcile_images(user_id):

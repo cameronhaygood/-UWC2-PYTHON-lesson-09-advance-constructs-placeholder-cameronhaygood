@@ -333,4 +333,6 @@ class TestMain(unittest.TestCase):
     #     print('breakpoint')
 
     def test_reconcile(self):
+        main.add_image(self.known_user.user_id,
+                       self.known_user.new_tags)
         main.reconcile_images(self.known_user.user_id)

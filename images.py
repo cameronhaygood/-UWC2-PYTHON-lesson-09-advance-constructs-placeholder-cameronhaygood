@@ -70,9 +70,9 @@ def list_db_images_by_user(user_id):
     '''Generates list of Pictures entries by User ID'''
 
     image_ids = ()
-    user_images = search_images_by_user(user_id)
+    user_images = image_search_by_user(user_id)
     for image in user_images:
-        image_ids.add(image['picture_id'])
+        image_ids = image_ids + (image['picture_id'],)
     return image_ids
 
 def reconcile_images(user_id):
@@ -112,6 +112,7 @@ def search_images_by_user():
         return _image_search(user_id=user_id)
 
     return search
+image_search_by_user = search_images_by_user()
 
 
 
