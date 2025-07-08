@@ -82,30 +82,28 @@ def list_user_images(_path, user_data):
         # Since it's a directory, let's recurse into them
         for i in _path.iterdir():
             list_user_images(i, user_data)
+    return user_data
 
 def list_db_images_by_user(user_id):
     '''Generates list of Pictures entries by User ID'''
 
-    image_ids = ()
+    image_ids = set()
     user_images = image_search_by_user(user_id)
     for image in user_images:
-        image_ids = image_ids + (image['picture_id'],)
+        image_data = (image['user_id'], '/'.join(image['tags'].replace('#', "").split()), image['picture_id'])
+        image_ids.add(image_data)
     return image_ids
 
 def reconcile_images(user_id):
     '''Reconciles Pictures entries by User ID'''
     db_images = list_db_images_by_user(user_id)
     server_images = list_user_images(path, user_id)
-    server_image_ids = ()
-    for image in server_images:
-        for data in image:
-            if '.png' in data:
-                server_image_ids.add(data.strip('.png'))
-    if db_images == server_image_ids:
+    if db_images == server_images:
         logger.info(f'Server and Database contain the same images: {db_images}')
     else:
         logger.info(f'Server and Database diverge:\n Server Images: {server_images}\nDatabase Images: {db_images}')
-
+    image_diff = {'missing_from_db': server_images.difference(db_images),
+                  'missing_from_server': db_images.difference(server_images)}
 
 
 # Search Images
