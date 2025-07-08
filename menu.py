@@ -200,6 +200,15 @@ def add_image():
     main.add_image(user_id, tag_entry)
 
 
+@log_function
+def list_images():
+    user_id = input('User ID: ')
+    main.list_user_images(user_id)
+
+
+@log_function
+def reconcile_images():
+    pass
 
 @log_function
 def quit_program():
@@ -226,6 +235,8 @@ if __name__ == '__main__':
         'K': delete_status,
         'L': save_status,
         'M': add_image,
+        'N': list_images,
+        'O': reconcile_images,
         'Q': quit_program
     }
     while True:
@@ -243,6 +254,8 @@ if __name__ == '__main__':
                             K: Delete status
                             L: Save status database to file
                             M: Add Image
+                            N: List Images
+                            O: Reconcile Images
                             Q: Quit
 
                             Please enter your choice: """).upper()
