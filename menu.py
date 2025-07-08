@@ -242,6 +242,7 @@ if __name__ == '__main__':
                             J: Search status
                             K: Delete status
                             L: Save status database to file
+                            M: Add Image
                             Q: Quit
 
                             Please enter your choice: """).upper()
