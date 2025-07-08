@@ -12,7 +12,21 @@ logger.remove(0)
 logger.add("log_{time:MM-DD-YYYY}.log")
 logger.add(sys.stderr, format="{time:MMMM D, YYYY > HH:mm:ss} | {level} | {message}")
 
+def log_function(func):
+    # This is the function that will actually be called when someone executes a method with a decorator
+    def logged(*args, **kwargs):
+        logger.debug(f"Function {func.__name__} called")
+        if args:
+            logger.debug(f"\twith args: {args}")
+        if kwargs:
+            logger.debug(f"\twith kwargs: {kwargs}")
+        result = func(*args, **kwargs)
+        logger.debug(f"\tResult --> {result}")
+        return result
 
+    return logged
+
+@log_function
 def load_users():
     '''
     Loads user accounts from a file
@@ -24,6 +38,7 @@ def load_users():
     main.load_users(filename)
 
 
+@log_function
 def load_status_updates():
     '''
     Loads status updates from a file
@@ -32,6 +47,7 @@ def load_status_updates():
     main.load_statuses(filename)
 
 
+@log_function
 def add_user():
     '''
     Adds a new user into the database
@@ -49,6 +65,7 @@ def add_user():
         print("User was successfully added")
 
 
+@log_function
 def update_user():
     '''
     Updates information for an existing user
@@ -63,6 +80,7 @@ def update_user():
         print("User was successfully updated")
 
 
+@log_function
 def search_user():
     '''
     Searches a user in the database
@@ -78,6 +96,7 @@ def search_user():
         print(f"Last name: {result['last_name']}")
 
 
+@log_function
 def delete_user():
     '''
     Deletes user from the database
@@ -89,6 +108,7 @@ def delete_user():
         print("User was successfully deleted")
 
 
+@log_function
 def save_users():
     '''
     Deprecated functionality for Assignmnet 3. Leaving to prevent breaking menu
@@ -96,6 +116,7 @@ def save_users():
     logger.warning("WARNING: Save Users function has been removed as it is no longer necessary")
 
 
+@log_function
 def add_status():
     '''
     Adds a new status into the database
@@ -109,6 +130,7 @@ def add_status():
         print("New status was successfully added")
 
 
+@log_function
 def update_status():
     '''
     Updates information for an existing status
@@ -122,6 +144,7 @@ def update_status():
         print("Status was successfully updated")
 
 
+@log_function
 def search_status():
     '''
     Searches a status in the database
@@ -136,6 +159,7 @@ def search_status():
         print(f"Status text: {result['status_text']}")
 
 
+@log_function
 def delete_status():
     '''
     Deletes status from the database
@@ -147,6 +171,7 @@ def delete_status():
         print("Status was successfully deleted")
 
 
+@log_function
 def save_status():
     '''
     Deprecated functionality for Assignmnet 3. Leaving to prevent breaking menu
@@ -154,6 +179,7 @@ def save_status():
     logger.warning("WARNING: Save Status function has been removed as it is no longer necessary")
 
 
+@log_function
 def quit_program():
     '''
     Quits program
