@@ -72,9 +72,9 @@ def list_user_images(_path, user_data):
             final_path_data = str(_path).split('\\')
             # path follows the format 'pictures/user_id/tags/file'
             # Second value is user_id, third-second to last is tags, last is image
-            file_data = (final_path_data[1], final_path_data[2:-1], final_path_data[-1])
+            file_data = (final_path_data[1], "/".join(final_path_data[2:-1]), final_path_data[-1])
             logger.debug (f"Tuple generated for {final_path_data[1]}: {file_data}")
-            user_data.append(file_data)
+            user_data.add(file_data)
     elif 'venv' in str(_path.absolute()):
         # Skip the venv folders
         pass
