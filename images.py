@@ -1,4 +1,5 @@
 import os
+import csv
 from pathlib import Path
 
 from loguru import logger
@@ -26,6 +27,22 @@ def add_image(user_id, tags):
         return True
     else:
         logger.error(f'Integrity Error adding image: {image_id}, {user_id}, {tags}')
+        return False
+
+def load_images(filename):
+    '''Reads in csv, renames headers to match database structure, then adds each image to table'''
+    new_headers = ['user_id', 'tags']
+
+    try:
+        with open(filename, 'r', newline='') as file:
+            reader = csv.DictReader(file, fieldnames=new_headers)
+            next(reader)
+            for image in reader:
+                add_image(**image)
+        logger.info(f"Successfully updated {filename}")
+        return True
+    except FileNotFoundError:
+        logger.error(f"Error: File {filename} not found.")
         return False
 
 def find_next_image_id():

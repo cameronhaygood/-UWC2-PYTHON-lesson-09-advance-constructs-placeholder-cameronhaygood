@@ -32,6 +32,12 @@ def load_statuses(filename):
     '''
     return user_status.load_statuses(filename)
 
+def load_images(filename):
+    '''
+    Loads csv to database
+    '''
+    return images.load_images(filename)
+
 
 def add_user(user_id, email, user_name, user_last_name):
     '''

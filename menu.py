@@ -199,6 +199,14 @@ def add_image():
     tag_entry = " ".join(tags)
     main.add_image(user_id, tag_entry)
 
+@log_function
+def load_images():
+    filename = input('Enter filename of images file: ')
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(current_dir, filename)
+    print(f'Loading {filename}...')
+    main.load_images(filename)
+
 
 @log_function
 def list_images():
@@ -237,6 +245,7 @@ if __name__ == '__main__':
         'M': add_image,
         'N': list_images,
         'O': reconcile_images,
+        'P': load_images,
         'Q': quit_program
     }
     while True:
@@ -256,6 +265,7 @@ if __name__ == '__main__':
                             M: Add Image
                             N: List Images
                             O: Reconcile Images
+                            P: Load Images
                             Q: Quit
 
                             Please enter your choice: """).upper()
