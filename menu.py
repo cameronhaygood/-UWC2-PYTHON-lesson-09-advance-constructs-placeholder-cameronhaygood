@@ -180,6 +180,28 @@ def save_status():
 
 
 @log_function
+def add_image():
+    '''
+    Adds a new image to the database
+    '''
+    user_id = input('User ID: ')
+
+    tags = []
+    while True:
+        new_tag = input('Enter tag starting with #, or enter a blank to continue: ')
+
+        if new_tag == '':
+            break
+        else:
+            tags.append(new_tag)
+            continue
+
+    tag_entry = " ".join(tags)
+    main.add_image(user_id, tag_entry)
+
+
+
+@log_function
 def quit_program():
     '''
     Quits program
@@ -203,6 +225,7 @@ if __name__ == '__main__':
         'J': search_status,
         'K': delete_status,
         'L': save_status,
+        'M': add_image,
         'Q': quit_program
     }
     while True:
