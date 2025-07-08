@@ -239,3 +239,10 @@ class TestMenu(unittest.TestCase):
         with patch('sys.exit') as mock_method:
             menu.quit_program()
             mock_method.assert_called_once()
+
+    def test_add_image(self):
+        '''Tests adding a new image to the database'''
+
+        with patch('builtins.input', side_effect=[self.known_user_id, '#golf', '#F1', '']):
+            menu.add_image()
+            # self.assertEqual(main.search_user(self.test_user.id)['user_id'], self.test_user.id)
