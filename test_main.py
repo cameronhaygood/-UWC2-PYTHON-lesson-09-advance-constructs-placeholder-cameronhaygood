@@ -323,7 +323,8 @@ class TestMain(unittest.TestCase):
         self.assertTrue(main.add_image(self.known_user.user_id,
                                        self.known_user.new_tags))
 
-        main.list_user_images(self.known_user.user_id)
+        result = main.list_user_images(self.known_user.user_id)
+        self.assertTrue(result == [('chaygood', ['golf', 'skiing', 'snowboarding'], '0000000002.png')])
 
     # def test_add_image_conflict(self):
     #     print('breakpoint 1')
@@ -331,4 +332,5 @@ class TestMain(unittest.TestCase):
     #                                     self.known_user.new_tags))
     #     print('breakpoint')
 
-
+    def test_reconcile(self):
+        main.reconcile_images(self.known_user.user_id)
