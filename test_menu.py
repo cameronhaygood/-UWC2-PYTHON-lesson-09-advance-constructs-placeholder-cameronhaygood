@@ -151,13 +151,15 @@ class TestMenu(unittest.TestCase):
 
     def test_load_status_database(self):
         '''Tests loading the status database'''
+        main.load_users(self.good_accounts_filename)
+
         with patch('builtins.input', return_value=self.good_status_updates_filename):
 
             menu.load_status_updates()
             # Testing that several of the users from the csv file can be found in the User Table
-            self.assertTrue(Statuses.find_one(status_id='Isabel.Avivah34_27')['status_id'] == 'Isabel.Avivah34_27')
+            self.assertTrue(Statuses.find_one(status_id='Blondie.Burroughs42_903')['status_id'] == 'Blondie.Burroughs42_903')
             self.assertTrue(
-                Statuses.find_one(status_id='Gwendolyn.Mallis13_114')['status_id'] == 'Gwendolyn.Mallis13_114')
+                Statuses.find_one(status_id='Brittaney.Gentry86_736')['status_id'] == 'Brittaney.Gentry86_736')
             # Testing that a user I know does not exist in the table is not found
             self.assertFalse(Statuses.find_one(status_id=self.test_user.status_id))
 
@@ -181,11 +183,11 @@ class TestMenu(unittest.TestCase):
 
     def test_update_status(self):
         '''Tests modifying a known existing status'''
-        with patch('builtins.input', side_effect=[self.test_user.id, self.known_status_id, self.test_user.status_text]):
+        with patch('builtins.input', side_effect=[self.known_user_id, self.known_status_id, self.test_user.status_text]):
             menu.update_status()
             updated_status = main.search_status(self.known_status_id)
             self.assertEqual(updated_status['status_id'], self.known_status_id)
-            self.assertEqual(updated_status['user_id'], self.test_user.id)
+            self.assertEqual(updated_status['user_id'], self.known_user_id)
             self.assertEqual(updated_status['status_text'], self.test_user.status_text)
 
         # Tests updating a status which does not exist in the status_collection returns an error message
